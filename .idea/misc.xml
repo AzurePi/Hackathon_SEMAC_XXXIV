@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Hackathon_SEMAC_XXXIV" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (Hackathon_SEMAC_XXXIV)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Hackathon" project-jdk-type="Python SDK" />
 </project>
