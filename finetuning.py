@@ -60,7 +60,7 @@ training_args = TrainingArguments(
     per_device_eval_batch_size=16,
     num_train_epochs=9,
     logging_dir='./logs',
-    logging_steps=5,
+    logging_steps=10,
 )
 
 trainer = Trainer(
