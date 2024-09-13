@@ -1,8 +1,8 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from transformers import AutoTokenizer
-import torch
 from transformers import AutoModelForSequenceClassification, Trainer, TrainingArguments
+import torch
 
 from sklearn.metrics import accuracy_score
 
@@ -27,7 +27,7 @@ class SentimentDataset(torch.utils.data.Dataset):
         return item
 
 
-df = pd.read_csv("train.csv")
+df = pd.read_csv("./data/train.csv")
 
 df.dropna(inplace=True)
 
@@ -60,7 +60,7 @@ training_args = TrainingArguments(
     per_device_eval_batch_size=16,
     num_train_epochs=9,
     logging_dir='./logs',
-    logging_steps=10,
+    logging_steps=5,
 )
 
 trainer = Trainer(

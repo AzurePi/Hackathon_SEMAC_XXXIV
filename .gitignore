@@ -5,3 +5,6 @@
 /logs/
 /output/
 /venv/
+/finetuned_model/
+/tmp_trainer/
+/results/

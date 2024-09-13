@@ -26,7 +26,7 @@ def main():
     parser.add_argument('--classifier', '-c', type=str, default='none')
     args = parser.parse_args()
 
-    reader = pd.read_csv("train.csv")
+    reader = pd.read_csv("data/train.csv")
     train_x = reader['text'].values
     train_y = reader['feeling'].values
 

@@ -15,7 +15,7 @@ class TestDataset(torch.utils.data.Dataset):
         return item
 
 
-test_df = pd.read_csv("test.csv")
+test_df = pd.read_csv("./data/test.csv")
 
 tokenizer = AutoTokenizer.from_pretrained("./finetuned_model")
 model = AutoModelForSequenceClassification.from_pretrained("./finetuned_model")
@@ -30,4 +30,4 @@ predictions = predict_trainer.predict(test_dataset)
 predicted_labels = [x.argmax() for x in predictions.predictions]
 test_df["feeling"] = predicted_labels
 
-test_df.to_csv("test_predictions.csv", index=False, columns=['ID', 'feeling'])
+test_df.to_csv("./predictions.csv", index=False, columns=['ID', 'feeling'])
