@@ -30,7 +30,7 @@ def main():
     train_x = reader['text'].values
     train_y = reader['feeling'].values
 
-    reader = pd.read_csv("test.csv")
+    reader = pd.read_csv("data/test.csv")
     test_x = reader['text'].values
 
     model = load_model(args)

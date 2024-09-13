@@ -36,7 +36,7 @@ df = df[['text', 'feeling']]
 train_texts, val_texts, train_labels, val_labels = train_test_split(
     df['text'].tolist(),
     df['feeling'].tolist(),
-    test_size=0.2
+    test_size=0.3
 )
 
 train_labels = [int(label) for label in train_labels]
