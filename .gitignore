@@ -1,1 +1,7 @@
 .idea
+/cache/
+/lm_model_['bert']/
+/lm_model_['roberta']/
+/logs/
+/output/
+/venv/

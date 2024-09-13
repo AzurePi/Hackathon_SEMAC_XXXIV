@@ -6,12 +6,15 @@ from pathlib import Path
 
 import torch
 
+from sklearn.metrics import accuracy_score
+
 import numpy as np
 
 from fast_bert.learner_cls import BertLearner
 from fast_bert.metrics import accuracy
 import logging
 import pandas as pd
+
 # %%
 
 data = pd.read_csv('train.csv')
@@ -49,7 +52,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 # %%
 
 databunch = BertDataBunch(DATA_PATH, LABEL_PATH,
-                          tokenizer='xlnet-base-cased',
+                          tokenizer='Ibrahim-Alam/finetuning-roberta-base-on-tweet_sentiment_binary',
                           train_file='train.csv',
                           val_file='val.csv',
                           label_file='labels.csv',
@@ -59,7 +62,7 @@ databunch = BertDataBunch(DATA_PATH, LABEL_PATH,
                           max_seq_length=512,
                           multi_gpu=True,
                           multi_label=False,
-                          model_type='xlnet-base-cased')
+                          model_type='roberta')
 
 # %%
 
@@ -69,7 +72,7 @@ metrics = [{'name': 'accuracy', 'function': accuracy}]
 
 learner = BertLearner.from_pretrained_model(
     databunch,
-    pretrained_path='xlnet-base-cased',
+    pretrained_path='Ibrahim-Alam/finetuning-roberta-base-on-tweet_sentiment_binary',
     metrics=metrics,
     device=device_cuda,
     logger=logger,
@@ -80,7 +83,7 @@ learner = BertLearner.from_pretrained_model(
     is_fp16=True,
     multi_label=False,
     logging_steps=50
-    )
+)
 
 # %%
 
@@ -93,7 +96,7 @@ with open("./learning_rate.txt", "w") as file:
 learner.fit(epochs=100,
             lr=learner.learning_rate,
             validate=True,  # Evaluate the model after each epoch
-            schedule_type="linear",
+            schedule_type="warmup_cosine",
             optimizer_type="lamb")
 
 # %%
@@ -124,9 +127,9 @@ test_ids = [int(x) for x in reader['ID'].array]
 
 multiple_predictions = learner.predict_batch(test_x)
 
-# with open("./teste.txt", "w") as file:
-#     file.write(multiple_predictions.__str__())
-with open(f"xlnet/predictions.csv", "w") as file:
+# %%
+
+with open(f"Ibrahim-Alam/predictions.csv", "w") as file:
     file.write("ID,feeling\n")
     for test_id, prediction in zip(test_ids, multiple_predictions):
         accu_0, accu_1 = prediction
@@ -137,8 +140,11 @@ with open(f"xlnet/predictions.csv", "w") as file:
         file.write(f"{int(test_id)},{feeling}\n")
 
 # %%
-predictions = pd.read_csv("xlnet/predictions.csv")
+predictions = pd.read_csv("Ibrahim-Alam/predictions.csv")
+
 merged = pd.merge(predictions, reader, on="ID", suffixes=('_pred', '_orig'))
 merged['match'] = merged['feeling_pred'] == merged['feeling_orig']
-acuracia = merged['match'].mean() * 100
+
+acuracia = merged["match"].mean() * 100
+
 print(acuracia)
